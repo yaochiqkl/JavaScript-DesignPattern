@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	#observersContainer{
+		background-color: #aaa;
+	}
+	</style>
+</head>
+<body>
+	<button id="addNewObserver">Add New Observer checkbox</button>
+	<input type="checkbox" id="mainCheckbox">目标（被观察者）、发布者
+	<div id="observersContainer"></div>
+	<script src="jquery.js"></script>
+	<script>
+		//观察者 发布者
+		function ObserverList() {
+			this.observerList = [];
+		}
+		ObserverList.prototype.Add = function(obj) {
+			return this.observerList.push(obj);
+		};
+		ObserverList.prototype.Count = function(obj) {
+			return this.observerList.length;
+		};
+		ObserverList.prototype.Get = function (index) {
+			if (index > -1 &&  index < this.observerList.length) {
+				return this.observerList[index];
+			}
+		};
+		function extend(obj,extension) {
+			for ( var key in obj ) {
+				extension[key] = obj[key];
+			}
+		}
+		//目标（被观察者） 订阅者
+		function Subject() {
+			this.observers = new ObserverList();
+		}
+		Subject.prototype.AddObserver = function(observer) {
+			this.observers.Add(observer);
+		};
+		Subject.prototype.Notify = function(context) {
+			var observerCount = this.observers.Count();
+			for (var i = 0; i < observerCount; i++ ){
+				this.observers.Get(i).Update(context);
+			}
+		};
+		function Observer() {
+			this.update = function(){};
+		}
+
+		var controlCheckbox = document.querySelector("#mainCheckbox"),
+			addBtn = document.querySelector("#addNewObserver"),
+			container = document.querySelector("#observersContainer");
+			//具体目标 Concrete Subject
+			//利用Subject拓展controlCheckbox
+			extend(new Subject(), controlCheckbox);
+			//点击checkkbox会出发通知到观察者上
+			controlCheckbox.onclick = new Function("controlCheckbox.Notify(controlCheckbox.checked)");
+			addBtn.onclick = AddNewObserver;
+			//具体观察者
+			function AddNewObserver () {
+				var check = document.createElement("input");
+				check.type = "checkbox";
+				extend(new Observer() , check);
+				check.Update = function (value) {
+					this.checked = value;
+				};
+				//为主subject的观察者列表添加新的观察者
+				controlCheckbox.AddObserver(check);
+				//将观察者附件到容器上
+				container.appendChild(check);
+			}
+		//由目标（被观察者，或称发布者）来通知观察者，目标保存观察者的列表，事件发生的时候向这个列表发送广播。
+	</script>
+</body>
+</html>
