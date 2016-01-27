@@ -61,7 +61,6 @@
 			//点击checkkbox会出发通知到观察者上
 			controlCheckbox.onclick = new Function("controlCheckbox.Notify(controlCheckbox.checked)");
 			addBtn.onclick = AddNewObserver;
-			//具体观察者
 			function AddNewObserver () {
 				var check = document.createElement("input");
 				check.type = "checkbox";
@@ -69,12 +68,13 @@
 				check.Update = function (value) {
 					this.checked = value;
 				};
-				//为主subject的观察者列表添加新的观察者
+				//为目标的观察者列表添加新的观察者，相当于订阅
 				controlCheckbox.AddObserver(check);
-				//将观察者附件到容器上
+				//将观察者添加到容器上
 				container.appendChild(check);
 			}
 		//由目标（被观察者，或称发布者）来通知观察者，目标保存观察者的列表，事件发生的时候向这个列表发送广播。
+		//Publish/Subscribe 发布/订阅模式是有区别的。
 	</script>
 </body>
 </html>
