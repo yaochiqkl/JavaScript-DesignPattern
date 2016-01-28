@@ -51,20 +51,26 @@
         var messageLogger = function ( topics, data ) {
             console.log( "Logging: " + topics + ": " + data );
         };
-        var subscription = pubsub.subscribe( "inbox/newMessage", messageLogger );
-        var lsz = pubsub.subscribe("inbox/newMessage",function(){console.log("suc");});
-        var sam = pubsub.subscribe("sleep",function(topic, args){console.log(args + topic +"sam");});
+        pubsub.subscribe( "newMessage", messageLogger );
+        pubsub.subscribe( "newMessage", messageLogger );
+        pubsub.subscribe("newMessage",function(){console.log("suc");});
+        pubsub.subscribe("sleep",function(topic, args){console.log(args + topic +"sam");});
          
-        pubsub.publish( "inbox/newMessage", "hello world!" );
-        pubsub.publish( "inbox/newMessage", ["test", "a", "b", "c"] );
-        pubsub.publish( "inbox/newMessage", {
+        pubsub.publish( "newMessage", "hello world!" );
+        pubsub.publish( "newMessage", ["test", "a", "b", "c"] );
+        pubsub.publish( "newMessage", {
           sender: "hello@google.com",
           body: "Hey again!"
         });
-        console.log(subscription + "||" + lsz +"||" +sam);
-        pubsub.unsubscribe( subscription );
-        pubsub.publish( "inbox/newMessage", "Hello! are you still there?" );
-        pubsub.publish("sleep","lsz");
+        pubsub.publish( "newMessage", "Hello! are you still there?" );
+        var o = { 
+            test : function(){
+                console.log(this == o);
+                (function(){
+                    console.log(this == window);
+                })();
+            }
+        };
     </script>
 </body>
 </html>
