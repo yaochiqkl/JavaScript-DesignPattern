@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+	<script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+	<style>
+		ul { list-style-type: none; margin: 0; padding: 0; margin-bottom: 10px; }
+		 li { margin: 5px; padding: 5px; width: 150px; }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="blog">
+			<span>Blog content 1 ~~~</span>
+			<button class="delete">Delete1</button>
+		</div>
+		<div class="blog">
+			<span>Blog content 2 ~~~</span>
+			<button class="delete">Delete2</button>
+		</div>
+		<div class="blog">
+			<span>Blog content 3 ~~~</span>
+			<button class="delete">Delete3</button>
+		</div>
+		<div class="blog">
+			<span>Blog content 4 ~~~</span>
+			<button class="delete">Delete4</button>
+		</div>
+		<div class="blog">
+			<span>Blog content 5 ~~~</span>
+			<button class="delete">Delete5</button>
+		</div>
+	</div>
+
+	<script>
+		//点击删除事件，闭包应用场景
+		function deleteHandler(event,element) {
+			console.log(event);
+			event.stopPropagation();
+			element.remove();
+			console.log(element);
+		}
+		function addClickHandlers() {
+			blog_list = document.getElementsByClassName('blog');
+			for ( var i = 0; i < blog_list.length; i++) {
+				var delete_btn = blog_list[i].getElementsByClassName('delete')[0];
+				var item =  blog_list[i];
+				delete_btn.onclick = function(which){
+					return function(){
+						return deleteHandler(event,which);
+					};
+				}(item);
+			}
+		}
+		addClickHandlers();
+		//call & bind 应用
+		var a = "ainwindow";
+		function inner(param){
+			console.log(param);
+			return this.a;
+		}
+		function outter(){
+			this.a = 1;
+			this.b = inner;
+		}
+		outter.prototype.c = "outter-c";
+		var foo = new outter();
+		//foo.b();
+		var myObj = {
+			a: "ainobj"
+		};
+		var callMyObj = foo.b.call(myObj,"callMyObj");
+		var bindMyObj = foo.b.bind(myObj,"bindMyObj");
+		//bindMyObj();
+		
+		//函数柯里化
+		function curry(fn) {
+			var args = Array.prototype.slice.call(arguments,1);
+			return function() {
+				var innerArgs = Array.prototype.slice.call(arguments);
+				var finnalArgs = args.concat(innerArgs);
+				alert(innerArgs);
+				return fn(finnalArgs);
+			};
+		}
+		function add(num1,num2){
+			console.log(arguments);
+		}
+		var currieAdd = curry(add,"p1");
+		currieAdd("p2","p3");
+	</script>
+</body>
+</html>
