@@ -45,6 +45,12 @@
                 }
                 return this;
             };
+            myObject.getTopics = function() {
+                return topics;
+            };
+            myObject.getSubUid = function() {
+                return subUid;
+            };
         }( pubsub ));
 
 
@@ -52,8 +58,6 @@
             console.log( "Logging: " + topics + ": " + data );
         };
         pubsub.subscribe( "newMessage", messageLogger );
-        pubsub.subscribe( "newMessage", messageLogger );
-        pubsub.subscribe("newMessage",function(){console.log("suc");});
         pubsub.subscribe("sleep",function(topic, args){console.log(args + topic +"sam");});
          
         pubsub.publish( "newMessage", "hello world!" );
@@ -62,15 +66,18 @@
           sender: "hello@google.com",
           body: "Hey again!"
         });
-        pubsub.publish( "newMessage", "Hello! are you still there?" );
+        pubsub.publish( "sleep", "I" );
         var o = { 
             test : function(){
-                console.log(this == o);
-                (function(){
-                    console.log(this == window);
+                console.log(this);
+                (function foo(){
+                    console.log(this);
                 })();
             }
         };
+        (function (){
+            console.log(this);
+        })();
     </script>
 </body>
 </html>
