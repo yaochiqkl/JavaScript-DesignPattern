@@ -14,7 +14,7 @@
 	<input type="checkbox" id="mainCheckbox">目标（被观察者）、发布者
 	<div id="observersContainer"></div>
 	<script>
-		//观察者 发布者
+		//观察者
 		function ObserverList() {
 			this.observerList = [];
 		}
@@ -34,7 +34,7 @@
 				extension[key] = obj[key];
 			}
 		}
-		//目标（被观察者） 订阅者
+		//目标（被观察者） 
 		function Subject() {
 			this.observers = new ObserverList();
 		}
@@ -47,6 +47,7 @@
 				this.observers.Get(i).Update(context);
 			}
 		};
+		//观察者
 		function Observer() {
 			this.update = function(){};
 		}
